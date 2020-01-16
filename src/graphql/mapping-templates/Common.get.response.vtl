@@ -1,0 +1,9 @@
+#if(!$util.isNullOrEmpty($ctx.result.company_id))
+    #set($company_id = $ctx.result.company_id)
+#else
+    #set($company_id = $ctx.result.id)
+#end
+#if($ctx.identity.claims.get("custom:trade_id") != $company_id)
+    $utils.unauthorized()
+#end
+$util.toJson($ctx.result)

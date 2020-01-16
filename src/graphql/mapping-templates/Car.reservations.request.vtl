@@ -1,0 +1,16 @@
+{
+    "version": "2018-05-29",
+    "method": "POST",
+    "resourcePath": "/v1/orgs/self/queries",
+    "params":{
+        "body": {
+          "sql": {
+            "query": "select * from ineed.reservations where car_id = '$ctx.source.id' and company_id = '$ctx.source.company_id'",
+          },
+        },
+        "headers":{
+            "Content-Type": "application/json",
+            "Authorization": "ApiKey redacted"
+        }
+    }
+}

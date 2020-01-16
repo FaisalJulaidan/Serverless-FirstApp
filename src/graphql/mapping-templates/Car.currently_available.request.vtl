@@ -1,0 +1,16 @@
+{
+    "version": "2018-05-29",
+    "method": "POST",
+    "resourcePath": "/v1/orgs/self/queries",
+    "params":{
+        "body": {
+          "sql": {
+            "query": "select CASE WHEN counter = 0 THEN true ELSE false END as count from (select count(*) as counter from (select true as counter from ineed.reservations r where r.car_id='$ctx.source.id' and r.company_id='$ctx.source.company_id' and PARSE_DATETIME('%Y-%m-%d %H:%M', r.pickup) < CURRENT_DATETIME() and PARSE_DATETIME('%Y-%m-%d %H:%M', r.dropoff) > CURRENT_DATETIME()) a) z;",
+          },
+        },
+        "headers":{
+            "Content-Type": "application/json",
+            "Authorization": "ApiKey redacted"
+        }
+    }
+}

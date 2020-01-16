@@ -1,0 +1,352 @@
+type Company {
+	id: String!
+	email: String!
+	logo: String
+	call_center: String
+	english_name: String!
+	arabic_name: String!
+	added_date: String!
+	status: String!
+	subscription: String!
+	documents: [Document!]
+	branches: [Branch]!
+	cars: [Car]
+	employees: [Employee]
+	customers: [Customer]
+	reservations: [Reservation]
+	statistics: Statistics
+}
+
+type Branch {
+	company_id: String!
+	id: String!
+	english_name: String!
+	arabic_name: String!
+	added_date: String!
+	status: String!
+	city: String!
+	phone: String
+	location: Location!
+	hours: [Hours!]!
+	delivery: Delivery
+	driver: Driver
+	company_info: Company
+	cars: [Car]
+	reservations: [Reservation]
+	statistics: Statistics
+}
+
+type Car {
+	company_id: String!
+	branch_id: String!
+	id: String!
+	model: String!
+	current_km: Float!
+	daily_km: Float!
+	extra_km: Float!
+	status: String!
+	driver: Boolean!
+	delivery: Boolean!
+	daily: Float!
+	weekly: Float!
+	monthly: Float!
+	category: String!
+	fuel: String!
+	gearbox: String!
+	ac: Boolean!
+	seats: Int!
+	navigation: Boolean!
+	insurance: String!
+	company_info: Company!
+	branch_info: Branch!
+	currently_available: Boolean
+	reservations: [Reservation]
+}
+
+type Employee {
+	id: String!
+	company_id: String!
+	email: String!
+	name: String!
+	phone: String!
+	added_date: String!
+	role: String!
+	access_list: [String]
+	status: String!
+	company_info: Company!
+	reservations: [Reservation]
+}
+
+type Customer {
+	id: String!
+	company_id: String!
+	email: String!
+	arabic_name: String!
+	english_name: String!
+	phone: String!
+	birth_date: String!
+	id_expiration: String!
+	license_expiration: String!
+	nationality: String!
+	occupation: String!
+	added_date: String!
+	status: String!
+	documents: [Document!]!
+	company_info: Company!
+	reservations: [Reservation]
+}
+
+type Reservation {
+	id: String!
+	company_id: String!
+	branch_id: String!
+	car_id: String!
+	customer_id: String!
+	employee_id: String!
+	pickup: String!
+	dropoff: String!
+	driver: Boolean!
+	delivery: Boolean!
+	location: Location
+	discount: Float!
+	vat: Float!
+	total_price: Float!
+	status: String!
+	notes: String
+	company_info: Company!
+	branch_info: Branch!
+	car_info: Car!
+	customer_info: Customer!
+	employee_info: Employee!
+}
+
+type Delivery {
+	available: Boolean!
+	fixed_price: Float
+	km_price: Float
+	hours: [Hours!]
+	max_distance: Float
+	allow_unverified: Boolean
+	confirmation_required: Boolean
+	num_of_drivers: Int
+}
+
+type Driver {
+	available: Boolean!
+	hours: [Hours!]
+	packages: [DriverPackage]
+	allow_unverified: Boolean
+	confirmation_required: Boolean
+	num_of_drivers: Int
+}
+
+type DriverPackage {
+	hours: Float!
+	km: Float!
+	price: Float!
+	additional_per_hour: Float!
+	additional_per_km: Float!
+	international: Boolean!
+}
+
+input DeliveryInput {
+	available: Boolean!
+	fixed_price: Float!
+	km_price: Float!
+	hours: [HoursInput!]
+	max_distance: Float!
+	allow_unverified: Boolean!
+	confirmation_required: Boolean!
+	num_of_drivers: Int!
+}
+
+input DriverInput {
+	available: Boolean!
+	hours: [HoursInput!]
+	packages: [DriverPackageInput]
+	allow_unverified: Boolean
+	confirmation_required: Boolean
+	num_of_drivers: Int
+}
+
+input DriverPackageInput {
+	hours: Float!
+	km: Float!
+	price: Float!
+	additional_per_hour: Float!
+	additional_per_km: Float!
+	international: Boolean!
+}
+
+type Document {
+	label: String!
+	description: String
+	uploaded_by: String!
+	uploaded_for: String!
+	uploaded_date: String!
+	url: String!
+}
+
+input DocumentInput {
+	label: String!
+	description: String
+	uploaded_by: String!
+	uploaded_for: String!
+	uploaded_date: String!
+	url: String!
+}
+
+type Hours {
+	enabled: Boolean!
+	label: String!
+	first_open: String!
+	first_close: String!
+	second_open: String!
+	second_close: String!
+	second_shift: Boolean!
+	timings: String!
+}
+
+input HoursInput {
+	enabled: Boolean!
+	label: String!
+	first_open: String!
+	first_close: String!
+	second_open: String!
+	second_close: String!
+	second_shift: Boolean!
+	timings: String!
+}
+
+type Location {
+	lat: Float!
+	lng: Float!
+}
+
+input LocationInput {
+	lat: Float!
+	lng: Float!
+}
+
+type RevenueByModel {
+	model: String
+	revenue: Float!
+}
+
+type Statistics {
+	active_reservations: Int
+	revenue_month_to_date: Float
+	revenue_by_model: [RevenueByModel]
+}
+
+type Mutation {
+	updateCompany(
+		id: String!
+		email: String!
+		logo: String!
+		call_center: String!
+		english_name: String!
+		arabic_name: String!
+		documents: [DocumentInput!]!
+	): Company!
+	addBranch(
+		id: String
+		company_id: String!
+		english_name: String!
+		arabic_name: String!
+		status: String!
+		city: String!
+		phone: String
+		location: LocationInput!
+		hours: [HoursInput!]!
+		delivery: DeliveryInput
+		driver: DriverInput
+	): Branch!
+	addCar(
+		id: String!
+		company_id: String!
+		branch_id: String!
+		model: String!
+		current_km: Float!
+		daily_km: Float!
+		extra_km: Float!
+		status: String!
+		driver: Boolean!
+		delivery: Boolean!
+		daily: Float!
+		weekly: Float!
+		monthly: Float!
+		category: String!
+		fuel: String!
+		gearbox: String!
+		ac: Boolean!
+		seats: Int!
+		navigation: Boolean!
+		insurance: String!
+	): Car!
+	addCustomer(
+		company_id: String!
+		id: String!
+		email: String!
+		phone: String!
+		arabic_name: String!
+		english_name: String!
+		birth_date: String!
+		id_expiration: String!
+		license_expiration: String!
+		nationality: String!
+		occupation: String!
+		status: String!
+		documents: [DocumentInput!]
+	): Customer!
+	addEmployee(
+		id: String!
+		company_id: String!
+		email: String!
+		name: String!
+		phone: String!
+		role: String!
+		access_list: [String]
+		status: String
+	): Employee!
+	addReservation(
+		id: String
+		company_id: String!
+		branch_id: String!
+		car_id: String!
+		customer_id: String!
+		employee_id: String!
+		pickup: String!
+		dropoff: String!
+		driver: Boolean!
+		delivery: Boolean!
+		location: LocationInput
+		discount: Float!
+		vat: Float!
+		total_price: Float!
+		status: String!
+		notes: String
+	): Reservation!
+	deleteCar(id: String!, company_id: String!): String!
+	deleteCustomer(id: String!, company_id: String!): String!
+	deleteReservation(id: String!): String!
+}
+
+type Query {
+	getCompany(id: String!): Company
+	getBranch(id: String!, company_id: String!): Branch!
+	getCar(id: String!, company_id: String!): Car!
+	getCustomer(id: String!, company_id: String!): Customer!
+	getEmployee(id: String!, company_id: String!): Employee!
+	getReservation(id: String!, company_id: String!): Reservation!
+	logger(company_id: String): String!
+	# getRevenueByModel(company_id: String!): [Revenue]!
+	# getActiveReservationCount(company_id: String!): Statistic!
+}
+
+type Subscription {
+	# onAddBranch(company_id: String!): Branch @aws_subscribe(mutations: ["addBranch", "updateBranch"])
+	# onAddCar(company_id: String!): Car @aws_subscribe(mutations: ["addCar"])
+	# onAddCustomer(company_id: String!): Customer @aws_subscribe(mutations: ["addCustomer"])
+	onAddReservation(company_id: String!): Reservation @aws_subscribe(mutations: ["addReservation"])
+}

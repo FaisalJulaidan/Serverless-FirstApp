@@ -1,0 +1,30 @@
+{
+	"name": "serverless-ineed",
+	"version": "1.0.0",
+	"description": "",
+	"main": "index.js",
+	"scripts": {
+		"dev": "serverless offline start",
+		"invoke": "serverless invoke --function",
+		"invoke_local": "serverless invoke local --function",
+		"sls": "sls deploy -v"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+redacted"
+	},
+	"author": "",
+	"license": "ISC",
+	"homepage": "redacted#readme",
+	"devDependencies": {
+		"serverless-offline": "^5.4.2",
+		"serverless-plugin-typescript": "^1.1.7",
+		"typescript": "^3.5.2"
+	},
+	"dependencies": {
+		"aws-amplify-serverless-plugin": "^1.4.1",
+		"aws-sdk": "^2.479.0",
+		"serverless-appsync-plugin": "^1.1.2",
+		"serverless-plugin-log-retention": "^2.0.0"
+	}
+}

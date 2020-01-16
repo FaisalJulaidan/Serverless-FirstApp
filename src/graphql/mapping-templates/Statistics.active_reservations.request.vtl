@@ -1,0 +1,16 @@
+{
+    "version": "2018-05-29",
+    "method": "POST",
+    "resourcePath": "/v1/orgs/self/queries",
+    "params":{
+        "body": {
+          "sql": {
+            "query": "select count(*) as count from ineed.reservations r where r.company_id='$ctx.source.id' and r.status = 'ongoing';",
+          },
+        },
+        "headers":{
+            "Content-Type": "application/json",
+            "Authorization": "ApiKey redacted"
+        }
+    }
+}
