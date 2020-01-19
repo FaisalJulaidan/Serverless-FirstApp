@@ -24,7 +24,7 @@ export const handler = async (event) => {
 				{ Name: 'custom:role', Value: employee.role },
 				{ Name: 'custom:trade_id', Value: employee.company_id },
 			],
-			DesiredDeliveryMediums: [ 'EMAIL' ],
+			DesiredDeliveryMediums: ['EMAIL'],
 			// MessageAction: 'RESEND',
 		};
 		await cognitoidentityserviceprovider.adminCreateUser(cognitoParams).promise();
@@ -58,7 +58,7 @@ const t = {
 		auth_time: 1576064007,
 		'custom:status': 'verified',
 		'custom:trade_id': 'redacted',
-		name: 'Hussain Alaidarous',
+		name: 'Faisal Julaidan',
 		phone_number: 'redacted',
 		exp: 1576128586,
 		'custom:role': 'admin',
@@ -68,7 +68,7 @@ const t = {
 	defaultAuthStrategy: 'ALLOW',
 	groups: null,
 	issuer: 'redacted',
-	sourceIp: [ 'redacted' ],
+	sourceIp: ['redacted'],
 	sub: 'redacted',
 	username: 'redacted',
 };
