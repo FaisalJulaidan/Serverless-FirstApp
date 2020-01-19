@@ -6,6 +6,7 @@ Resources:
       TableName: ${self:provider.environment.COMPANIES_TABLE}
       BillingMode: PAY_PER_REQUEST
       StreamSpecification:
+        StreamEnabled: true
         StreamViewType: NEW_AND_OLD_IMAGES
       AttributeDefinitions:
         - AttributeName: id
@@ -20,6 +21,7 @@ Resources:
       TableName: ${self:provider.environment.BRANCHES_TABLE}
       BillingMode: PAY_PER_REQUEST
       StreamSpecification:
+        StreamEnabled: true
         StreamViewType: NEW_AND_OLD_IMAGES
       AttributeDefinitions:
         - AttributeName: id

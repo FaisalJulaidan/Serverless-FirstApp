@@ -47,7 +47,7 @@ substitutions: # allows to pass variables from here to velocity templates
 mappingTemplates:
 
   - dataSource: DynamoBranchesTableDS
-    type: Mutation 
-    field: addBranch
-    request: Common.elevated_add.request.vtl
-    response: Common.add.response.vtl
+    type: Query 
+    field: getCompany
+    request: Common.query.request.vtl
+    response: Common.query.response.vtl

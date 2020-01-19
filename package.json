@@ -17,9 +17,11 @@
 	"license": "ISC",
 	"homepage": "redacted#readme",
 	"devDependencies": {
-		"serverless-offline": "^5.4.2",
-		"typescript": "^3.5.2",
-		"serverless-plugin-typescript": "^1.1.7"
+		"serverless-appsync-offline": "^1.4.0",
+		"serverless-dynamodb-local": "^0.2.38",
+		"serverless-offline": "^5.12.1",
+		"serverless-plugin-typescript": "^1.1.7",
+		"typescript": "^3.5.2"
 	},
 	"dependencies": {
 		"aws-amplify-serverless-plugin": "^1.4.1",

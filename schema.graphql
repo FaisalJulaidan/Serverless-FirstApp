@@ -1,0 +1,41 @@
+type Company {
+	id: String!
+	email: String!
+	logo: String
+	call_center: String
+	english_name: String!
+	arabic_name: String!
+	added_date: String!
+	status: String!
+	subscription: String!
+}
+
+input DeliveryInput {
+	available: Boolean!
+	fixed_price: Float!
+	km_price: Float!
+	max_distance: Float!
+	allow_unverified: Boolean!
+	confirmation_required: Boolean!
+	num_of_drivers: Int!
+}
+
+
+# ============= Root Types ============= #
+type Mutation {
+	deleteCar(id: String!, company_id: String!): String!
+}
+
+type Query {
+	getCompany(id: String!): Company
+}
+
+# type Subscription {
+# 	onAddReservation(company_id: String!): Reservation @aws_subscribe(mutations: ["addReservation"])
+# }
+
+schema {
+    query: Query
+    mutation: Mutation
+	# subscription: Subscription
+}

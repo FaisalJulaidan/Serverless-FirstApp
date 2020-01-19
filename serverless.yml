@@ -7,12 +7,12 @@ package:
 
 plugins:
   - serverless-plugin-typescript
-  # - serverless-dynamodb-local
-  # - serverless-appsync-plugin
-  # - serverless-appsync-offline
-  # - serverless-offline
-  # - serverless-plugin-log-retention
-  # - aws-amplify-serverless-plugin
+  - serverless-dynamodb-local
+  - serverless-appsync-plugin
+  - serverless-appsync-offline
+  - serverless-offline
+  - serverless-plugin-log-retention
+  - aws-amplify-serverless-plugin
 
 
 provider:
@@ -40,26 +40,30 @@ provider:
      Resource:
       - arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.TABLES_TABLE}
 
-# functions:
-  # addTable:
-  #   handler: src/lambdas/preSignup.addCompany
-  #   events: 
-  #     - http:
-  #         path: add_table
-  #         method: post
-  #         cors: true
+functions:
+  addTable:
+    handler: src/preSignup.addCompany
+    events: 
+      - http:
+          path: add_table
+          method: post
+          cors: true
 
 resources:
   - ${file(resources/dynamo.yml)}
   # - ${file(resources/s3.yml)}
   # - ${file(resources/cognito.yml)}
 
-# custom:
-#   appSync:
-#     # - ${file(resources/appsync.yml)}
-#   appsync-offline: # appsync-offline configuration
-#     port: 62222
-#     dynamodb:
-#     client:
-#       endpoint: "http://localhost:8000"
+custom:
+  dynamodb:
+    stages:
+      - dev
+  appSync:
+    - ${file(resources/appsync.yml)}
+  appsync-offline: # appsync-offline configuration
+    port: 62222
+    # schema: src/graphql/schema.gql
+    dynamodb:
+      client:
+        endpoint: "http://localhost:8000"
   
