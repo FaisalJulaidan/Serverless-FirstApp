@@ -31,80 +31,6 @@ Resources:
           KeyType: HASH
         - AttributeName: id
           KeyType: RANGE
-  carsTable:
-    Type: AWS::DynamoDB::Table
-    # DeletionPolicy: Retain
-    Properties:
-      TableName: ${self:provider.environment.CARS_TABLE}
-      BillingMode: PAY_PER_REQUEST
-      StreamSpecification:
-        StreamViewType: NEW_AND_OLD_IMAGES
-      AttributeDefinitions:
-        - AttributeName: id
-          AttributeType: S
-        - AttributeName: company_id
-          AttributeType: S
-      KeySchema:
-        - AttributeName: company_id
-          KeyType: HASH
-        - AttributeName: id
-          KeyType: RANGE
-  employeesTable:
-    Type: AWS::DynamoDB::Table
-    # DeletionPolicy: Retain
-    Properties:
-      TableName: ${self:provider.environment.EMPLOYEES_TABLE}
-      BillingMode: PAY_PER_REQUEST
-      StreamSpecification:
-        StreamViewType: NEW_AND_OLD_IMAGES
-      AttributeDefinitions:
-        - AttributeName: id
-          AttributeType: S
-        - AttributeName: company_id
-          AttributeType: S
-      KeySchema:
-        - AttributeName: company_id
-          KeyType: HASH
-        - AttributeName: id
-          KeyType: RANGE
-  customersTable:
-    Type: AWS::DynamoDB::Table
-    # DeletionPolicy: Retain
-    Properties:
-      TableName: ${self:provider.environment.CUSTOMERS_TABLE}
-      BillingMode: PAY_PER_REQUEST
-      StreamSpecification:
-        StreamViewType: NEW_AND_OLD_IMAGES
-      AttributeDefinitions:
-        - AttributeName: id
-          AttributeType: S
-        - AttributeName: company_id
-          AttributeType: S
-      KeySchema:
-        - AttributeName: company_id
-          KeyType: HASH
-        - AttributeName: id
-          KeyType: RANGE
-
-
-  reservationsTable:
-    Type: AWS::DynamoDB::Table
-    # DeletionPolicy: Retain
-    Properties:
-      TableName: ${self:provider.environment.RESERVATIONS_TABLE}
-      BillingMode: PAY_PER_REQUEST
-      StreamSpecification:
-        StreamViewType: NEW_AND_OLD_IMAGES
-      AttributeDefinitions:
-        - AttributeName: id
-          AttributeType: S
-        - AttributeName: company_id
-          AttributeType: S
-      KeySchema:
-        - AttributeName: company_id
-          KeyType: HASH
-        - AttributeName: id
-          KeyType: RANGE
 
 # Print out the Id of the User Pool that is created
 Outputs:
@@ -114,15 +40,6 @@ Outputs:
   DynamoBranchesTable:
     Value:
       Ref: branchesTable
-  DynamoCarsTable:
+  DynamoTablesTable:
     Value:
-      Ref: carsTable
-  DynamoEmployeesTable:
-    Value:
-      Ref: employeesTable
-  DynamoCustomersTable:
-    Value:
-      Ref: customersTable
-  # DynamoReservationsTable:
-  #   Value:
-  #     Ref: reservationsTable
+      Ref: tablesTable

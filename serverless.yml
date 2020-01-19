@@ -1,7 +1,5 @@
-# org: hussaino
-# app: ineed
 
-service: ineed
+service: n6lb # نطلب 
 
 package:
   exclude:
@@ -9,10 +7,13 @@ package:
 
 plugins:
   - serverless-plugin-typescript
-  - serverless-offline
-  - serverless-plugin-log-retention
-  - serverless-appsync-plugin
-  - aws-amplify-serverless-plugin
+  # - serverless-dynamodb-local
+  # - serverless-appsync-plugin
+  # - serverless-appsync-offline
+  # - serverless-offline
+  # - serverless-plugin-log-retention
+  # - aws-amplify-serverless-plugin
+
 
 provider:
   name: aws
@@ -25,12 +26,8 @@ provider:
   environment:
     COMPANIES_TABLE: ${self:service}-${self:provider.stage}-companies
     BRANCHES_TABLE: ${self:service}-${self:provider.stage}-branches
-    CARS_TABLE: ${self:service}-${self:provider.stage}-cars
-    EMPLOYEES_TABLE: ${self:service}-${self:provider.stage}-employees
-    CUSTOMERS_TABLE: ${self:service}-${self:provider.stage}-customers
-    RESERVATIONS_TABLE: ${self:service}-${self:provider.stage}-reservations
-    S3BUCKET: ${self:service}-${self:provider.stage}-resources
-
+    TABLES_TABLE: ${self:service}-${self:provider.stage}-tables
+  
   iamRoleStatements:
    - Effect: Allow
      Action: 
@@ -41,82 +38,28 @@ provider:
       - dynamodb:UpdateItem
       - dynamodb:DeleteItem
      Resource:
-      - arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.COMPANIES_TABLE}
-      - arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.BRANCHES_TABLE}
-      - arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.CARS_TABLE}
-      - arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.EMPLOYEES_TABLE}
-      - arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.CUSTOMERS_TABLE}
-      - arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.RESERVATIONS_TABLE}
-   - Effect: Allow
-     Action:
-      - ses:SendEmail	
-     Resource: 
-      - redacted
-   - Effect: Allow
-     Action:
-      - cognito-idp:AdminUpdateUserAttributes
-      - cognito-idp:AdminGetUser
-      - cognito-idp:AdminCreateUser
-     Resource: 
-      - '*'
-   - Effect: Allow
-     Action:
-      - s3:GetObject
-      - s3:PutObject
-      - s3:PutObjectAcl
-     Resource: 
-      - Fn::GetAtt: [AttachmentsBucket, Arn]
+      - arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.TABLES_TABLE}
 
-
-functions:
-  preSignup:
-    handler: src/preSignup.handler
-    onError: redacted
-    events:
-      - cognitoUserPool:
-          pool: INeedPool
-          trigger: PreSignUp
-
-  postConfirmation:
-    handler: src/postConfirmation.handler
-    onError: redacted
-    events:
-      - cognitoUserPool:
-          pool: INeedPool
-          trigger: PostConfirmation
-          
-  newUser:
-    handler: src/postConfirmation.newUser
-    onError: redacted
-    
-  updateCompany:
-    handler: src/updateCompany.handler
-    onError: redacted
-    
-  addEmployee:
-    handler: src/addEmployee.handler
-    onError: redacted
-
-  addCompany:
-    handler: src/preSignup.addCompany
-    events: 
-      - http:
-          path: add_company
-          method: post
-          cors: true
+# functions:
+  # addTable:
+  #   handler: src/lambdas/preSignup.addCompany
+  #   events: 
+  #     - http:
+  #         path: add_table
+  #         method: post
+  #         cors: true
 
 resources:
   - ${file(resources/dynamo.yml)}
-  - ${file(resources/s3.yml)}
-  - ${file(resources/cognito.yml)}
+  # - ${file(resources/s3.yml)}
+  # - ${file(resources/cognito.yml)}
 
-
-custom:
-  logRetentionInDays: 14 # used to set a global value for all functions
-  appSync:
-    - ${file(resources/appsync.yml)}
-  # amplify:
-  #   - filename: ../admin_ineed/src/aws-exports-${self:provider.stage}.ts
-  #     type: typescript
-  #     appClient: CognitoUserPoolClient
-
+# custom:
+#   appSync:
+#     # - ${file(resources/appsync.yml)}
+#   appsync-offline: # appsync-offline configuration
+#     port: 62222
+#     dynamodb:
+#     client:
+#       endpoint: "http://localhost:8000"
+  
