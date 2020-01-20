@@ -58,7 +58,7 @@ const t = {
 		auth_time: 1576064007,
 		'custom:status': 'verified',
 		'custom:trade_id': 'redacted',
-		name: 'Faisal Julaidan ',
+		name: 'Faisal Julaidan',
 		phone_number: 'redacted',
 		exp: 1576128586,
 		'custom:role': 'admin',
