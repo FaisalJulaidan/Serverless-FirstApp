@@ -1,5 +1,5 @@
 
-service: n6lb # نطلب 
+service: n6lb # نطلب
 
 package:
   exclude:
@@ -7,63 +7,57 @@ package:
 
 plugins:
   - serverless-plugin-typescript
-  - serverless-dynamodb-local
-  - serverless-appsync-plugin
-  - serverless-appsync-offline
+#  - serverless-iot-local
   - serverless-offline
   - serverless-plugin-log-retention
   - aws-amplify-serverless-plugin
 
 
+
 provider:
   name: aws
   runtime: nodejs10.x
-  region: ap-south-1
-  stage: dev
+  stage:  ${opt:stage, 'dev'}
+  region: ${file(./env.yaml):${self:provider.stage}.REGION}
   versionFunctions: false
   cfnRole: redacted
 
   environment:
-    COMPANIES_TABLE: ${self:service}-${self:provider.stage}-companies
-    BRANCHES_TABLE: ${self:service}-${self:provider.stage}-branches
-    TABLES_TABLE: ${self:service}-${self:provider.stage}-tables
-  
-  iamRoleStatements:
-   - Effect: Allow
-     Action: 
-      - dynamodb:Query
-      - dynamodb:Scan
-      - dynamodb:GetItem
-      - dynamodb:PutItem
-      - dynamodb:UpdateItem
-      - dynamodb:DeleteItem
-     Resource:
-      - arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.TABLES_TABLE}
+    ${file(./env.yaml):${self:provider.stage}}
+
 
 functions:
-  addTable:
-    handler: src/preSignup.addCompany
-    events: 
+  graphql:
+    handler: src/graphql/index.handler
+    events:
       - http:
-          path: add_table
+          path: graphql
           method: post
           cors: true
+      - http:
+          path: graphql
+          method: get
+          cors: true
+
 
 resources:
-  - ${file(resources/dynamo.yml)}
-  # - ${file(resources/s3.yml)}
-  # - ${file(resources/cognito.yml)}
+   - ${file(resources/s3.yml)}
+   - ${file(resources/cognito.yml)}
+   - ${file(resources/iot.yml)}
+
 
 custom:
-  dynamodb:
-    stages:
-      - dev
-  appSync:
-    - ${file(resources/appsync.yml)}
-  appsync-offline: # appsync-offline configuration
-    port: 62222
-    # schema: src/graphql/schema.gql
-    dynamodb:
-      client:
-        endpoint: "http://localhost:8000"
+  amplify:
+    - filename: ./aws-exports.ts
+      type: typescript
+#  serverless-iot-local:
+#    start:
+#      port: 1884
+#    # Uncomment only if you already have an MQTT server running locally
+#    # noStart: true
+#    redis:
+#      host: 'localhost'
+#      port: 6379
+#      db: 12
+
   

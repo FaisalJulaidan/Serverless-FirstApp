@@ -1,5 +1,5 @@
 Resources:
-  CognitoUserPoolINeedPool:
+  CognitoUserPool:
     Type: AWS::Cognito::UserPool
     Properties:
       UserPoolName: ${self:service}-user-pool-${self:provider.stage}
@@ -55,7 +55,7 @@ Resources:
       # Generate an app client name based on the stage
       ClientName: ${self:service}-user-pool-client-${self:provider.stage}
       UserPoolId:
-        Ref: CognitoUserPoolINeedPool
+        Ref: CognitoUserPool
       ExplicitAuthFlows:
         - ADMIN_NO_SRP_AUTH
       GenerateSecret: false
@@ -73,7 +73,7 @@ Resources:
         - ClientId:
             Ref: CognitoUserPoolClient
           ProviderName:
-            Fn::GetAtt: [ "CognitoUserPoolINeedPool", "ProviderName" ]
+            Fn::GetAtt: [ "CognitoUserPool", "ProviderName" ]
             
   # IAM roles
   CognitoIdentityPoolRoles:
@@ -144,7 +144,8 @@ Resources:
             Statement:
               - Effect: 'Allow'
                 Action:
-                  - 'apigateway:POST'
+                  - iot: Subscribe
+                  - iot: Publish
                 Resource: '*'
                   # - Fn::GetAtt: [ApiGatewayMethodAddcompanyPost, Arn]
               
@@ -154,7 +155,7 @@ Resources:
 Outputs:
   UserPoolId:
     Value:
-      Ref: CognitoUserPoolINeedPool
+      Ref: CognitoUserPool
 
   UserPoolClientId:
     Value:

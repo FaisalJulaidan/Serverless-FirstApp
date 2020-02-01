@@ -1,0 +1,18 @@
+[
+  {
+    "id": "36c26cf5-8073-4085-87a6-74a7fcebf4b6",
+    "created_at": 1579973682,
+    "name": "Cheesecake Factory",
+    "telephone": "+966557884342",
+    "email": "cheese@gamil.com",
+    "tier": "BASIC"
+  },
+  {
+    "id": "34533b25-9cb7-49b5-be08-88afad81aaf1",
+    "created_at": 1578974682,
+    "name": "Nandos",
+    "telephone": "+966557994342",
+    "email": "nandos@gamil.com",
+    "tier": "BASIC"
+  }
+]
