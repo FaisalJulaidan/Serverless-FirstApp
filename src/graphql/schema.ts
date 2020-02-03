@@ -66,6 +66,7 @@ export const schema = gql`
         passcode: Int!
         redirectUrl: String!
         connectedUsers: [User!]
+        activeOrders: [Order!]
     }
     
     type Customer {
@@ -84,27 +85,6 @@ export const schema = gql`
         displayName: String!
     }
 
-    type Order {
-        _id: String!
-        createdAt: DateTime!
-        updatedAt: DateTime!
-        status: OrderStatus!
-        price: Float!
-        items: [OrderItem!]!
-        approvedAt: DateTime
-        servedAt: DateTime
-    }
-    
-    type OrderItem {
-        productId: String!
-        status: OrderItemStatus
-        approvedAt: DateTime
-        servedAt: DateTime
-        quantity: Int!
-        unitPrice: Float!
-        
-    }
-    
     type Location {
         country: String!
         city: String!
@@ -112,18 +92,121 @@ export const schema = gql`
         lat: Float!
         lng: Float!
     }
-
-    enum OrderStatus {
-        OPEN # still receving orders
-        CLOSED # paid and closed
-        CANCELLED # unpaid and canclled
+    
+    type FoodItem {
+        _id: String!
+        isAvailable: Boolean!
+        unitPrice: Float!
+        sides: [FoodItem!]
+        ingredients: [Ingredient!]
+    }
+    
+    type Ingredient {
+        _id: String!
+        name: String!
+        desc: String!
+        maxQuantity: Int!
+        unitPrice: Float!
     }
 
-    enum OrderItemStatus {
-        WAITING_APPROVAL # watting cashier to approve
-        WAITING_FOOD # watting food to be served
+    type Order {
+        _id: String!
+        createdAt: DateTime!
+        updatedAt: DateTime!
+        status: OrderStatus!
+        price: Float!
+        items: [OrderFoodItem!]!
+        approvedAt: DateTime
+        servedAt: DateTime
+    }
+
+    type OrderFoodItem {
+        _id: String!
+        foodItemId: String!
+        status: OrderFoodItemStatus!
+        approvedAt: DateTime
+        servedAt: DateTime
+        quantity: Int!
+        unitPrice: Float!
+        notes: String!
+        sides: [OrderFoodItem!]
+        ingredients: [OrderIngredient!]
+    }
+
+    type OrderIngredient {
+        _id: String!
+        ingredientId: String!
+        name: String!
+        desc: String!
+        quantity: Int!
+        unitPrice: Float!
+    }
+    
+    type Menu {
+        
+    }
+    
+    # === === === === #
+    # === Inputs === #
+    type FoodItemInput {
+        isAvailable: Boolean!
+        unitPrice: Float!
+        sides: [FoodItem!]
+        ingredients: [Ingredient!]
+    }
+
+    type IngredientInput {
+        name: String!
+        desc: String!
+        maxQuantity: Int!
+        unitPrice: Float!
+    }
+    
+    # Order inputs are coming from the customer
+    type OrderInput {
+        createdAt: DateTime!
+        updatedAt: DateTime!
+        status: OrderStatus!
+        price: Float!
+        items: [OrderFoodItemInput!]!
+        approvedAt: DateTime
+        servedAt: DateTime
+    }
+    
+    type OrderFoodItemInput {
+        foodItemId: String!
+        orderedBy: User!
+        status: OrderFoodItemStatus!
+        approvedAt: DateTime
+        servedAt: DateTime
+        quantity: Int!
+        unitPrice: Float!
+        notes: String!
+        sides: [OrderFoodItemInput!]
+        ingredients: [OrderIngredientInput!]
+    }
+
+    type OrderIngredientInput {
+        ingredientId: String!
+        name: String!
+        desc: String!
+        quantity: Int!
+        unitPrice: Float!
+    }
+
+    # === === === === #
+    # === Enums === #
+    enum OrderStatus {
+        OPEN # still receiving orders
+        CLOSED # paid and closed
+        CANCELLED # unpaid and cancelled
+    }
+
+    enum OrderFoodItemStatus {
+        WAITING_APPROVAL # wating waiter to approve
+        WAITING_FOOD # wating food to be served
         READY # cooked and ready for serving
-        SEARVED # food on the table
+        SERVED # food on the table
         PAID
     }
 
