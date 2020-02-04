@@ -26,10 +26,10 @@ export const schema = gql`
         email: String!
         telephone: String!
         tier: Tier!
-        verified: Boolean
-        branches: Branch
-        employees: Employee
-#        products: Product
+        branches: [Branch]
+        employees: [Employee!]
+        foodItems: [FoodItem!]
+        foodCategories: [FoodCategory!]
     }
 
     type Employee {
@@ -37,8 +37,8 @@ export const schema = gql`
         createdAt: DateTime!
         updatedAt: DateTime!
         companyId: String!
-        firstname: String!
-        lastname: String!
+        firstName: String!
+        lastName: String!
         email: String!
         lastActive: String!
         companyInfo: Company
@@ -55,14 +55,13 @@ export const schema = gql`
         tables: [Table!]
         orders: [Order!]
     }
-
-    union User = Customer | Guest
+    
     type Table {
         _id: String!
+        branchId: String!
+        branchInfo: Branch!
         createdAt: DateTime!
         updatedAt: DateTime!
-        companyId: String!
-        branchId: String!
         passcode: Int!
         redirectUrl: String!
         connectedUsers: [User!]
@@ -79,6 +78,8 @@ export const schema = gql`
         email: String!
         address: String
     }
+
+    union User = Customer | Guest
     
     type Guest {
         _id: String!
@@ -95,6 +96,7 @@ export const schema = gql`
     
     type FoodItem {
         _id: String!
+        companyId: String!
         isAvailable: Boolean!
         unitPrice: Float!
         sides: [FoodItem!]
@@ -108,9 +110,27 @@ export const schema = gql`
         maxQuantity: Int!
         unitPrice: Float!
     }
+    
+    type FoodCategory {
+        _id: String!
+        name: String!
+        desc: String!
+        foodItems: [FoodItem!]
+    }
+
+    type Menu {
+        _id: String
+        companyId: String!
+        companyInfo: Company!
+        categories: [FoodCategory!]
+        
+    }
 
     type Order {
-        _id: String!
+        _id: String
+        branchId: String!
+        branchInfo: Branch!
+        userId: String!
         createdAt: DateTime!
         updatedAt: DateTime!
         status: OrderStatus!
@@ -140,10 +160,6 @@ export const schema = gql`
         desc: String!
         quantity: Int!
         unitPrice: Float!
-    }
-    
-    type Menu {
-        
     }
     
     # === === === === #
@@ -217,12 +233,9 @@ export const schema = gql`
     }
 
     type Mutation {
-        addCompany(name: String!, email: Email!): Company
-        updateCompany(name: String!,
-            email: String!,
-            telephone: String!,
-            tier: String!,
-        ): Company!
+        addCompany(name: String!, email: Email!, telephone: PhoneNumber!): Company
+        updateCompany(name: String!, email: String!, telephone: PhoneNumber!): Company!
+        addCompany(name: String!, email: Email!, telephone: PhoneNumber!): Branch!
     }
 
     type Query {

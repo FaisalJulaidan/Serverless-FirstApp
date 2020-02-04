@@ -21,7 +21,7 @@ interface GetOtherInput {
 }
 
 export const QueryResolver: Resolver<any> = {
-    getCompany: async (_, args, context, info) => {
+    getCompany: async (_, args) => {
         return findOne<Company>('companies', args);
     },
     // getBranch: (_, args: GetOtherInput) => get<Branch>('branches', args),
