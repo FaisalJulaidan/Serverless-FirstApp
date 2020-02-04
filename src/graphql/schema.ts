@@ -1,232 +1,229 @@
 const { gql } = require('apollo-server-lambda');
-import {DateTimeResolver, EmailAddressResolver, PhoneNumberResolver} from 'graphql-scalars';
+import { DateTimeResolver, EmailAddressResolver, PhoneNumberResolver } from 'graphql-scalars';
 import { CompanyResolver, MutationResolver, QueryResolver } from './resolvers';
 
 // ￿raphql resolvers
 export const resolvers = {
-    Query: QueryResolver,
-    Mutation: MutationResolver,
-    Company: CompanyResolver,
-    // Custom scalar types
-    DateTime: DateTimeResolver,
-    Email: EmailAddressResolver,
-    PhoneNumber: PhoneNumberResolver
+	Query: QueryResolver,
+	Mutation: MutationResolver,
+	Company: CompanyResolver,
+	// Custom scalar types
+	DateTime: DateTimeResolver,
+	Email: EmailAddressResolver,
+	PhoneNumber: PhoneNumberResolver,
 };
 
 export const schema = gql`
-    scalar DateTime
-    scalar Email
-    scalar PhoneNumber
-    
-    type Company {
-        _id: String!
-        createdAt: DateTime!
-        updatedAt: DateTime!
-        name: String!
-        email: String!
-        telephone: String!
-        tier: Tier!
-        verified: Boolean
-        branches: Branch
-        employees: Employee
-#        products: Product
-    }
+	scalar DateTime
 
-    type Employee {
-        _id: String!
-        createdAt: DateTime!
-        updatedAt: DateTime!
-        companyId: String!
-        firstname: String!
-        lastname: String!
-        email: String!
-        lastActive: String!
-        companyInfo: Company
-    }
+	scalar Email
 
-    type Branch {
-        _id: String!
-        companyId: String!
-        createdAt: DateTime!
-        updatedAt: DateTime!
-        name: String!
-        companyInfo: Company!
-        location: Location
-        tables: [Table!]
-        orders: [Order!]
-    }
+	scalar PhoneNumber
 
-    union User = Customer | Guest
-    type Table {
-        _id: String!
-        createdAt: DateTime!
-        updatedAt: DateTime!
-        companyId: String!
-        branchId: String!
-        passcode: Int!
-        redirectUrl: String!
-        connectedUsers: [User!]
-        activeOrders: [Order!]
-    }
-    
-    type Customer {
-        _id: String!
-        createdAt: DateTime!
-        updatedAt: DateTime!
-        displayName: String!
-        firstname: String!
-        lastName: String!
-        email: String!
-        address: String
-    }
-    
-    type Guest {
-        _id: String!
-        displayName: String!
-    }
+	type Company {
+		_id: String!
+		createdAt: DateTime!
+		updatedAt: DateTime!
+		name: String!
+		email: String!
+		telephone: String!
+		tier: Tier!
+		verified: Boolean
+		# branches: Branch
+		# employees: Employee
+		#        products: Product
+	}
 
-    type Location {
-        country: String!
-        city: String!
-        street:String!
-        lat: Float!
-        lng: Float!
-    }
-    
-    type FoodItem {
-        _id: String!
-        isAvailable: Boolean!
-        unitPrice: Float!
-        sides: [FoodItem!]
-        ingredients: [Ingredient!]
-    }
-    
-    type Ingredient {
-        _id: String!
-        name: String!
-        desc: String!
-        maxQuantity: Int!
-        unitPrice: Float!
-    }
+	# type Employee {
+	#     _id: String!
+	#     createdAt: DateTime!
+	#     updatedAt: DateTime!
+	#     companyId: String!
+	#     firstname: String!
+	#     lastname: String!
+	#     email: String!
+	#     lastActive: String!
+	#     companyInfo: Company
+	# }
 
-    type Order {
-        _id: String!
-        createdAt: DateTime!
-        updatedAt: DateTime!
-        status: OrderStatus!
-        price: Float!
-        items: [OrderFoodItem!]!
-        approvedAt: DateTime
-        servedAt: DateTime
-    }
+	# type Branch {
+	#     _id: String!
+	#     companyId: String!
+	#     createdAt: DateTime!
+	#     updatedAt: DateTime!
+	#     name: String!
+	#     companyInfo: Company!
+	#     location: Location
+	#     tables: [Table!]
+	#     orders: [Order!]
+	# }
 
-    type OrderFoodItem {
-        _id: String!
-        foodItemId: String!
-        status: OrderFoodItemStatus!
-        approvedAt: DateTime
-        servedAt: DateTime
-        quantity: Int!
-        unitPrice: Float!
-        notes: String!
-        sides: [OrderFoodItem!]
-        ingredients: [OrderIngredient!]
-    }
+	# union User = Customer | Guest
+	# type Table {
+	#     _id: String!
+	#     createdAt: DateTime!
+	#     updatedAt: DateTime!
+	#     companyId: String!
+	#     branchId: String!
+	#     passcode: Int!
+	#     redirectUrl: String!
+	#     connectedUsers: [User!]
+	#     activeOrders: [Order!]
+	# }
 
-    type OrderIngredient {
-        _id: String!
-        ingredientId: String!
-        name: String!
-        desc: String!
-        quantity: Int!
-        unitPrice: Float!
-    }
-    
-    type Menu {
-        
-    }
-    
-    # === === === === #
-    # === Inputs === #
-    type FoodItemInput {
-        isAvailable: Boolean!
-        unitPrice: Float!
-        sides: [FoodItem!]
-        ingredients: [Ingredient!]
-    }
+	# type Customer {
+	#     _id: String!
+	#     createdAt: DateTime!
+	#     updatedAt: DateTime!
+	#     displayName: String!
+	#     firstname: String!
+	#     lastName: String!
+	#     email: String!
+	#     address: String
+	# }
 
-    type IngredientInput {
-        name: String!
-        desc: String!
-        maxQuantity: Int!
-        unitPrice: Float!
-    }
-    
-    # Order inputs are coming from the customer
-    type OrderInput {
-        createdAt: DateTime!
-        updatedAt: DateTime!
-        status: OrderStatus!
-        price: Float!
-        items: [OrderFoodItemInput!]!
-        approvedAt: DateTime
-        servedAt: DateTime
-    }
-    
-    type OrderFoodItemInput {
-        foodItemId: String!
-        orderedBy: User!
-        status: OrderFoodItemStatus!
-        approvedAt: DateTime
-        servedAt: DateTime
-        quantity: Int!
-        unitPrice: Float!
-        notes: String!
-        sides: [OrderFoodItemInput!]
-        ingredients: [OrderIngredientInput!]
-    }
+	# type Guest {
+	#     _id: String!
+	#     displayName: String!
+	# }
 
-    type OrderIngredientInput {
-        ingredientId: String!
-        name: String!
-        desc: String!
-        quantity: Int!
-        unitPrice: Float!
-    }
+	# type Location {
+	#     country: String!
+	#     city: String!
+	#     street:String!
+	#     lat: Float!
+	#     lng: Float!
+	# }
 
-    # === === === === #
-    # === Enums === #
-    enum OrderStatus {
-        OPEN # still receiving orders
-        CLOSED # paid and closed
-        CANCELLED # unpaid and cancelled
-    }
+	# type FoodItem {
+	#     _id: String!
+	#     isAvailable: Boolean!
+	#     unitPrice: Float!
+	#     sides: [FoodItem!]
+	#     ingredients: [Ingredient!]
+	# }
 
-    enum OrderFoodItemStatus {
-        WAITING_APPROVAL # wating waiter to approve
-        WAITING_FOOD # wating food to be served
-        READY # cooked and ready for serving
-        SERVED # food on the table
-        PAID
-    }
+	# type Ingredient {
+	#     _id: String!
+	#     name: String!
+	#     desc: String!
+	#     maxQuantity: Int!
+	#     unitPrice: Float!
+	# }
 
-    enum Tier {
-        TRIAL
-        BASIC
-        PREMIUM
-    }
+	# type Order {
+	#     _id: String!
+	#     createdAt: DateTime!
+	#     updatedAt: DateTime!
+	#     status: OrderStatus!
+	#     price: Float!
+	#     items: [OrderFoodItem!]!
+	#     approvedAt: DateTime
+	#     servedAt: DateTime
+	# }
 
-    type Mutation {
-        addCompany(name: String!, email: Email!): Company
-        updateCompany(name: String!,
-            email: String!,
-            telephone: String!,
-            tier: String!,
-        ): Company!
-    }
+	# type OrderFoodItem {
+	#     _id: String!
+	#     foodItemId: String!
+	#     status: OrderFoodItemStatus!
+	#     approvedAt: DateTime
+	#     servedAt: DateTime
+	#     quantity: Int!
+	#     unitPrice: Float!
+	#     notes: String!
+	#     sides: [OrderFoodItem!]
+	#     ingredients: [OrderIngredient!]
+	# }
 
-    type Query {
-        getCompany(id: String!): Company
-    }
+	# type OrderIngredient {
+	#     _id: String!
+	#     ingredientId: String!
+	#     name: String!
+	#     desc: String!
+	#     quantity: Int!
+	#     unitPrice: Float!
+	# }
+
+	# type Menu {
+
+	# }
+
+	# # === === === === #
+	# # === Inputs === #
+	# type FoodItemInput {
+	#     isAvailable: Boolean!
+	#     unitPrice: Float!
+	#     sides: [FoodItem!]
+	#     ingredients: [Ingredient!]
+	# }
+
+	# type IngredientInput {
+	#     name: String!
+	#     desc: String!
+	#     maxQuantity: Int!
+	#     unitPrice: Float!
+	# }
+
+	# # Order inputs are coming from the customer
+	# type OrderInput {
+	#     createdAt: DateTime!
+	#     updatedAt: DateTime!
+	#     status: OrderStatus!
+	#     price: Float!
+	#     items: [OrderFoodItemInput!]!
+	#     approvedAt: DateTime
+	#     servedAt: DateTime
+	# }
+
+	# type OrderFoodItemInput {
+	#     foodItemId: String!
+	#     orderedBy: User!
+	#     status: OrderFoodItemStatus!
+	#     approvedAt: DateTime
+	#     servedAt: DateTime
+	#     quantity: Int!
+	#     unitPrice: Float!
+	#     notes: String!
+	#     sides: [OrderFoodItemInput!]
+	#     ingredients: [OrderIngredientInput!]
+	# }
+
+	# type OrderIngredientInput {
+	#     ingredientId: String!
+	#     name: String!
+	#     desc: String!
+	#     quantity: Int!
+	#     unitPrice: Float!
+	# }
+
+	# # === === === === #
+	# # === Enums === #
+	# enum OrderStatus {
+	#     OPEN # still receiving orders
+	#     CLOSED # paid and closed
+	#     CANCELLED # unpaid and cancelled
+	# }
+
+	# enum OrderFoodItemStatus {
+	#     WAITING_APPROVAL # wating waiter to approve
+	#     WAITING_FOOD # wating food to be served
+	#     READY # cooked and ready for serving
+	#     SERVED # food on the table
+	#     PAID
+	# }
+
+	enum Tier {
+		TRIAL
+		BASIC
+		PREMIUM
+	}
+
+	type Mutation {
+		addCompany(name: String!, email: Email!): Company
+		updateCompany(name: String!, email: String!, telephone: String!, tier: String!): Company!
+	}
+
+	type Query {
+		getCompany(id: String!): Company
+	}
 `;
-

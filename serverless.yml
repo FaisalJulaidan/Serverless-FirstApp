@@ -9,7 +9,6 @@ plugins:
   - serverless-plugin-typescript
 #  - serverless-iot-local
   - serverless-offline
-  - serverless-plugin-log-retention
   - aws-amplify-serverless-plugin
 
 
@@ -18,17 +17,29 @@ provider:
   name: aws
   runtime: nodejs10.x
   stage:  ${opt:stage, 'dev'}
+  logRetentionInDays: 14
   region: ${file(./env.yaml):${self:provider.stage}.REGION}
   versionFunctions: false
-  cfnRole: redacted
+  cfnRole: arn:aws:iam::842592815228:role/serverlessFramworkCfn
 
   environment:
     ${file(./env.yaml):${self:provider.stage}}
 
 
 functions:
+  preSignup:
+    handler: src/preSignup.handler
+    layers:
+      - arn:aws:lambda:ap-south-1:842592815228:layer:nodejs:1
+    events:
+      - cognitoUserPool:
+          pool: N6lbPool
+          trigger: PreSignUp
+
   graphql:
     handler: src/graphql/index.handler
+    layers:
+      - arn:aws:lambda:ap-south-1:842592815228:layer:nodejs:1
     events:
       - http:
           path: graphql
@@ -43,13 +54,14 @@ functions:
 resources:
    - ${file(resources/s3.yml)}
    - ${file(resources/cognito.yml)}
-   - ${file(resources/iot.yml)}
+  #  - ${file(resources/iot.yml)}
 
 
 custom:
   amplify:
     - filename: ./aws-exports.ts
       type: typescript
+      appClient: CognitoUserPoolClient
 #  serverless-iot-local:
 #    start:
 #      port: 1884
