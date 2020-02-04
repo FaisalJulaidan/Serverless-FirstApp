@@ -4,3 +4,10 @@ node_modules
 .dynamodb
 .env
 env.json
+
+# aws-amplify generated secrets files
+schema.json
+awsconfiguration.json
+aws-exports.*
+operations.graphql
+API.swift
