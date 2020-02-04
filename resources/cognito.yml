@@ -1,19 +1,16 @@
 Resources:
-  CognitoUserPool:
+  CognitoUserPoolN6lbPool:
     Type: AWS::Cognito::UserPool
     Properties:
       UserPoolName: ${self:service}-user-pool-${self:provider.stage}
-      # UsernameAttributes:
+      UsernameAttributes:
+        - email
+      #   - phone_number
+      # AliasAttributes:
       #   - email
       #   - phone_number
-      AliasAttributes:
-        - email
-        - phone_number
       AutoVerifiedAttributes:
         - email
-      EmailConfiguration:
-        EmailSendingAccount: DEVELOPER
-        SourceArn: "redacted"
       Schema: 
         - Name: email
           Required: true
@@ -55,7 +52,7 @@ Resources:
       # Generate an app client name based on the stage
       ClientName: ${self:service}-user-pool-client-${self:provider.stage}
       UserPoolId:
-        Ref: CognitoUserPool
+        Ref: CognitoUserPoolN6lbPool
       ExplicitAuthFlows:
         - ADMIN_NO_SRP_AUTH
       GenerateSecret: false
@@ -73,7 +70,7 @@ Resources:
         - ClientId:
             Ref: CognitoUserPoolClient
           ProviderName:
-            Fn::GetAtt: [ "CognitoUserPool", "ProviderName" ]
+            Fn::GetAtt: [ "CognitoUserPoolN6lbPool", "ProviderName" ]
             
   # IAM roles
   CognitoIdentityPoolRoles:
@@ -144,8 +141,8 @@ Resources:
             Statement:
               - Effect: 'Allow'
                 Action:
-                  - iot: Subscribe
-                  - iot: Publish
+                  - iot:Subscribe
+                  - iot:Publish
                 Resource: '*'
                   # - Fn::GetAtt: [ApiGatewayMethodAddcompanyPost, Arn]
               
@@ -155,7 +152,7 @@ Resources:
 Outputs:
   UserPoolId:
     Value:
-      Ref: CognitoUserPool
+      Ref: CognitoUserPoolN6lbPool
 
   UserPoolClientId:
     Value:
