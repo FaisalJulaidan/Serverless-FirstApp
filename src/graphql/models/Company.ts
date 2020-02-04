@@ -1,6 +1,6 @@
 import { Common, Branch, Employee, FoodItem, FoodCategory } from './';
 
-export interface Company extends Common{
+export interface Company extends Common {
     name: string
     email: string
     telephone: string

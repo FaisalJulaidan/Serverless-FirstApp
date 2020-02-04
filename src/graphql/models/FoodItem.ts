@@ -1,4 +1,4 @@
 import { Common } from './';
 
-export interface FoodItem extends Common{
+export interface FoodItem extends Common {
 }

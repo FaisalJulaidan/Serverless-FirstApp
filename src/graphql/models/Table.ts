@@ -1,5 +1,5 @@
 import { Common } from './';
 
-export interface Table extends Common{
+export interface Table extends Common {
 
 }

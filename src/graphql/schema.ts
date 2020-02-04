@@ -1,5 +1,5 @@
 const { gql } = require('apollo-server-lambda');
-import {DateTimeResolver, EmailAddressResolver, PhoneNumberResolver} from 'graphql-scalars';
+import { DateTimeResolver, EmailAddressResolver, PhoneNumberResolver } from 'graphql-scalars';
 import { CompanyResolver, MutationResolver, QueryResolver } from './resolvers';
 
 // ￿raphql resolvers
@@ -10,14 +10,14 @@ export const resolvers = {
     // Custom scalar types
     DateTime: DateTimeResolver,
     Email: EmailAddressResolver,
-    PhoneNumber: PhoneNumberResolver
+    PhoneNumber: PhoneNumberResolver,
 };
 
 export const schema = gql`
     scalar DateTime
     scalar Email
     scalar PhoneNumber
-    
+
     type Company {
         _id: String!
         createdAt: DateTime!
@@ -55,7 +55,7 @@ export const schema = gql`
         tables: [Table!]
         orders: [Order!]
     }
-    
+
     type Table {
         _id: String!
         branchId: String!
@@ -67,7 +67,7 @@ export const schema = gql`
         connectedUsers: [User!]
         activeOrders: [Order!]
     }
-    
+
     type Customer {
         _id: String!
         createdAt: DateTime!
@@ -80,7 +80,7 @@ export const schema = gql`
     }
 
     union User = Customer | Guest
-    
+
     type Guest {
         _id: String!
         displayName: String!
@@ -93,7 +93,7 @@ export const schema = gql`
         lat: Float!
         lng: Float!
     }
-    
+
     type FoodItem {
         _id: String!
         companyId: String!
@@ -102,7 +102,7 @@ export const schema = gql`
         sides: [FoodItem!]
         ingredients: [Ingredient!]
     }
-    
+
     type Ingredient {
         _id: String!
         name: String!
@@ -110,7 +110,7 @@ export const schema = gql`
         maxQuantity: Int!
         unitPrice: Float!
     }
-    
+
     type FoodCategory {
         _id: String!
         name: String!
@@ -123,7 +123,7 @@ export const schema = gql`
         companyId: String!
         companyInfo: Company!
         categories: [FoodCategory!]
-        
+
     }
 
     type Order {
@@ -161,7 +161,7 @@ export const schema = gql`
         quantity: Int!
         unitPrice: Float!
     }
-    
+
     # === === === === #
     # === Inputs === #
     type FoodItemInput {
@@ -177,7 +177,7 @@ export const schema = gql`
         maxQuantity: Int!
         unitPrice: Float!
     }
-    
+
     # Order inputs are coming from the customer
     type OrderInput {
         createdAt: DateTime!
@@ -188,7 +188,7 @@ export const schema = gql`
         approvedAt: DateTime
         servedAt: DateTime
     }
-    
+
     type OrderFoodItemInput {
         foodItemId: String!
         orderedBy: User!

@@ -11,7 +11,7 @@ Resources:
       #   - phone_number
       AutoVerifiedAttributes:
         - email
-      Schema: 
+      Schema:
         - Name: email
           Required: true
           Mutable: true
@@ -71,7 +71,7 @@ Resources:
             Ref: CognitoUserPoolClient
           ProviderName:
             Fn::GetAtt: [ "CognitoUserPoolN6lbPool", "ProviderName" ]
-            
+
   # IAM roles
   CognitoIdentityPoolRoles:
     Type: AWS::Cognito::IdentityPoolRoleAttachment
@@ -83,7 +83,7 @@ Resources:
           Fn::GetAtt: [CognitoAuthRole, Arn]
         unauthenticated:
           Fn::GetAtt: [CognitoUnauthRole, Arn]
-          
+
   # IAM role used for authenticated users
   CognitoAuthRole:
     Type: AWS::IAM::Role
@@ -115,7 +115,7 @@ Resources:
                   - 'cognito-identity:*'
                 Resource: '*'
 
-  
+
   CognitoUnauthRole:
     Type: AWS::IAM::Role
     Properties:
@@ -144,9 +144,9 @@ Resources:
                   - iot:Subscribe
                   - iot:Publish
                 Resource: '*'
-                  # - Fn::GetAtt: [ApiGatewayMethodAddcompanyPost, Arn]
-              
- 
+                # - Fn::GetAtt: [ApiGatewayMethodAddcompanyPost, Arn]
+
+
 
 # Print out the Id of the User Pool that is created
 Outputs:
