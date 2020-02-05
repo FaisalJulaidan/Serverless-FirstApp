@@ -5,7 +5,10 @@ const jwkToPem = require('jwk-to-pem');
 
 export const getPayload = async (token) => {
 	try {
-		const res = await axios.get(``);
+		const res = await axios.get(
+			`https://cognito-idp.${process.env.AWS_REGION}.amazonaws.com/${process.env
+				.USER_POOL_ID}/.well-known/jwks.json`,
+		);
 
 		if (res.status === 200) {
 			let pems = {};

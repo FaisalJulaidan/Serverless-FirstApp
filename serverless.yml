@@ -40,11 +40,18 @@ functions:
     handler: src/graphql/index.handler
     layers:
       - arn:aws:lambda:ap-south-1:842592815228:layer:nodejs:1
+    environment:
+      USER_POOL_ID: # The name of the env var in your lambda
+        Ref: CognitoUserPoolN6lbPool
     events:
       - http:
           path: graphql
           method: post
           cors: true
+          authorizer:
+            type: COGNITO_USER_POOLS
+            authorizerId:
+              Ref: ApiGatewayAuthorizer  # 
       - http:
           path: graphql
           method: get

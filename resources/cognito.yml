@@ -146,7 +146,17 @@ Resources:
                 Resource: '*'
                   # - Fn::GetAtt: [ApiGatewayMethodAddcompanyPost, Arn]
               
- 
+  ApiGatewayAuthorizer:
+    Type: AWS::ApiGateway::Authorizer
+    Properties:
+      AuthorizerResultTtlInSeconds: 300
+      IdentitySource: method.request.header.Authorization
+      Name: Cognito
+      RestApiId:
+        Ref: ApiGatewayRestApi
+      Type: COGNITO_USER_POOLS
+      ProviderARNs:
+        - Fn::GetAtt: [ "CognitoUserPoolN6lbPool", "Arn" ]
 
 # Print out the Id of the User Pool that is created
 Outputs:
