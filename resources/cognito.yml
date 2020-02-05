@@ -6,7 +6,7 @@ Resources:
       UsernameAttributes:
         - email
       #   - phone_number
-      # AliasAttributes:
+      # AliasAttributes: # users can sign in using alias in place of the username
       #   - email
       #   - phone_number
       AutoVerifiedAttributes:
