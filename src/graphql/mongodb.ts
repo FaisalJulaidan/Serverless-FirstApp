@@ -41,7 +41,7 @@ export const find = async <Output = any>(collection: string, args: object): Prom
     }
 };
 
-export const insert = async <Output>(collection: string, args): Promise<Output> => {
+export const insertOne = async <Output>(collection: string, args): Promise<Output> => {
     console.log({ collection, args });
     try {
         const client = (await connectToDatabase(process.env.MONGODB_URI!)).collection(collection);
@@ -55,7 +55,7 @@ export const insert = async <Output>(collection: string, args): Promise<Output> 
     }
 };
 
-export const update = async (collection: string, filter: object, args): Promise<UpdateWriteOpResult> => {
+export const updateOne = async (collection: string, filter: object, args): Promise<UpdateWriteOpResult> => {
     console.log({ collection, args });
     try {
         const client = (await connectToDatabase(process.env.MONGODB_URI!)).collection(collection);

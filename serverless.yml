@@ -1,4 +1,3 @@
-
 service: n6lb # نطلب
 
 package:
@@ -7,7 +6,7 @@ package:
 
 plugins:
   - serverless-plugin-typescript
-#  - serverless-iot-local
+  #  - serverless-iot-local
   - serverless-offline
   - aws-amplify-serverless-plugin
 
@@ -20,7 +19,7 @@ provider:
   logRetentionInDays: 14
   region: ${file(./env.yaml):${self:provider.stage}.REGION}
   versionFunctions: false
-  cfnRole: arn:aws:iam::842592815228:role/serverlessFramworkCfn
+  cfnRole: arn:aws:iam::842592815228:role/serverlessFrameworkCfn
 
   environment:
     ${file(./env.yaml):${self:provider.stage}}
@@ -59,8 +58,8 @@ functions:
 
 
 resources:
-   - ${file(resources/s3.yml)}
-   - ${file(resources/cognito.yml)}
+  - ${file(resources/s3.yml)}
+  - ${file(resources/cognito.yml)}
   #  - ${file(resources/iot.yml)}
 
 
@@ -69,14 +68,14 @@ custom:
     - filename: ./aws-exports.ts
       type: typescript
       appClient: CognitoUserPoolClient
-#  serverless-iot-local:
-#    start:
-#      port: 1884
-#    # Uncomment only if you already have an MQTT server running locally
-#    # noStart: true
-#    redis:
-#      host: 'localhost'
-#      port: 6379
-#      db: 12
+  #  serverless-iot-local:
+  #    start:
+  #      port: 1884
+  #    # Uncomment only if you already have an MQTT server running locally
+  #    # noStart: true
+  #    redis:
+  #      host: 'localhost'
+  #      port: 6379
+  #      db: 12
 
   
