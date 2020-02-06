@@ -5,8 +5,15 @@ export interface Company extends Common {
     email: string
     telephone: string
     tier: 'TRIAL' | 'BASIC' | 'PREMIUM'
+    settings: CompanySettings
     branches: [Branch]
     employees: [Employee]
     foodItems: [FoodItem]
     foodCategories: [FoodCategory]
+}
+
+interface CompanySettings {
+    currency: 'SAR' | 'USD'
+    language: 'ar' | 'en'
+    timeZone: string
 }

@@ -23,13 +23,20 @@ export const schema = gql`
         createdAt: DateTime!
         updatedAt: DateTime!
         name: String!
-        email: String!
-        telephone: String!
+        email: Email!
+        telephone: PhoneNumber!
         tier: Tier!
+        settings: CompanySettings!
         branches: [Branch]
         employees: [Employee!]
         foodItems: [FoodItem!]
         foodCategories: [FoodCategory!]
+    }
+    
+    type CompanySettings {
+        currency: Currency!
+        language: Language!
+        timeZone: String!
     }
 
     type Employee {
@@ -39,16 +46,16 @@ export const schema = gql`
         companyId: String!
         firstName: String!
         lastName: String!
-        email: String!
+        email: Email!
         lastActive: String!
         companyInfo: Company
     }
 
     type Branch {
         _id: String!
-        companyId: String!
         createdAt: DateTime!
         updatedAt: DateTime!
+        companyId: String!
         name: String!
         companyInfo: Company!
         location: Location
@@ -58,10 +65,10 @@ export const schema = gql`
 
     type Table {
         _id: String!
-        branchId: String!
-        branchInfo: Branch!
         createdAt: DateTime!
         updatedAt: DateTime!
+        branchId: String!
+        branchInfo: Branch!
         passcode: Int!
         redirectUrl: String!
         connectedUsers: [User!]
@@ -75,7 +82,7 @@ export const schema = gql`
         displayName: String!
         firstname: String!
         lastName: String!
-        email: String!
+        email: Email!
         address: String
     }
 
@@ -96,6 +103,8 @@ export const schema = gql`
 
     type FoodItem {
         _id: String!
+        createdAt: DateTime!
+        updatedAt: DateTime!
         companyId: String!
         isAvailable: Boolean!
         unitPrice: Float!
@@ -105,6 +114,8 @@ export const schema = gql`
 
     type Ingredient {
         _id: String!
+        createdAt: DateTime!
+        updatedAt: DateTime!
         name: String!
         desc: String!
         maxQuantity: Int!
@@ -113,6 +124,8 @@ export const schema = gql`
 
     type FoodCategory {
         _id: String!
+        createdAt: DateTime!
+        updatedAt: DateTime!
         name: String!
         desc: String!
         foodItems: [FoodItem!]
@@ -120,19 +133,22 @@ export const schema = gql`
 
     type Menu {
         _id: String
+        createdAt: DateTime!
+        updatedAt: DateTime!
         companyId: String!
         companyInfo: Company!
         categories: [FoodCategory!]
+        # ... not sure yet
 
     }
 
     type Order {
         _id: String
+        createdAt: DateTime!
+        updatedAt: DateTime!
         branchId: String!
         branchInfo: Branch!
         userId: String!
-        createdAt: DateTime!
-        updatedAt: DateTime!
         status: OrderStatus!
         price: Float!
         items: [OrderFoodItem!]!
@@ -142,6 +158,8 @@ export const schema = gql`
 
     type OrderFoodItem {
         _id: String!
+        createdAt: DateTime!
+        updatedAt: DateTime!
         foodItemId: String!
         status: OrderFoodItemStatus!
         approvedAt: DateTime
@@ -155,6 +173,8 @@ export const schema = gql`
 
     type OrderIngredient {
         _id: String!
+        createdAt: DateTime!
+        updatedAt: DateTime!
         ingredientId: String!
         name: String!
         desc: String!
@@ -230,6 +250,16 @@ export const schema = gql`
         TRIAL
         BASIC
         PREMIUM
+    }
+
+    enum Currency {
+        SAR
+        USD
+    }
+
+    enum Language {
+        ar
+        en
     }
 
     type Mutation {
