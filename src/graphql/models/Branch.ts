@@ -1,9 +1,9 @@
-import { Common, Table, Order } from './';
+import { Common, Company, Table, Order } from './';
 
-export interface Branch {
+export interface Branch extends Common {
 	updatedAt: Date;
 	name: string;
-	companyInfo: string;
+	companyInfo: Company;
 	location: string;
 	tables: Table[];
 	orders: Order[];
