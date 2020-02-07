@@ -76,7 +76,7 @@ export const schema = gql`
 		updatedAt: DateTime!
 		passcode: Int!
 		redirectUrl: String!
-		connectedUsers: [User!]
+		# connectedUsers: [User!]
 		activeOrders: [Order!]
 	}
 
@@ -91,7 +91,7 @@ export const schema = gql`
 		address: String
 	}
 
-	union User = Customer | Guest
+	# union User = Customer | Guest
 
 	type Guest {
 		_id: String!
@@ -202,7 +202,7 @@ export const schema = gql`
 
 	type OrderFoodItemInput {
 		foodItemId: String!
-		orderedBy: User!
+		# orderedBy: User!
 		status: OrderFoodItemStatus!
 		approvedAt: DateTime
 		servedAt: DateTime
