@@ -64,6 +64,7 @@ resources:
 
 
 custom:
+  
   amplify:
     - filename: ./aws-exports.ts
       type: typescript
