@@ -1,82 +1,73 @@
 service: n6lb # نطلب
 
 package:
-  exclude:
-    - node_modules/**
+    exclude:
+        - node_modules/**
 
 plugins:
-  - serverless-plugin-typescript
-  #  - serverless-iot-local
-  - serverless-offline
-  - aws-amplify-serverless-plugin
-
-
+    - serverless-plugin-typescript
+    #  - serverless-iot-local
+    - serverless-offline
+    - aws-amplify-serverless-plugin
 
 provider:
-  name: aws
-  runtime: nodejs10.x
-  stage:  ${opt:stage, 'dev'}
-  logRetentionInDays: 14
-  region: ${file(./env.yaml):${self:provider.stage}.REGION}
-  versionFunctions: false
-  cfnRole: arn:aws:iam::842592815228:role/serverlessFrameworkCfn
+    name: aws
+    runtime: nodejs10.x
+    stage: ${opt:stage, 'dev'}
+    logRetentionInDays: 14
+    region: ${file(./env.yaml):${self:provider.stage}.REGION}
+    versionFunctions: false
+    cfnRole: arn:aws:iam::842592815228:role/serverlessFrameworkCfn
 
-  environment:
-    ${file(./env.yaml):${self:provider.stage}}
-
+    environment: ${file(./env.yaml):${self:provider.stage}}
 
 functions:
-  preSignup:
-    handler: src/preSignup.handler
-    layers:
-      - arn:aws:lambda:ap-south-1:842592815228:layer:nodejs:1
-    events:
-      - cognitoUserPool:
-          pool: N6lbPool
-          trigger: PreSignUp
+    preSignup:
+        handler: src/preSignup.handler
+        layers:
+            - arn:aws:lambda:ap-south-1:842592815228:layer:nodejs:1
+        events:
+            - cognitoUserPool:
+                  pool: N6lbPool
+                  trigger: PreSignUp
 
-  graphql:
-    handler: src/graphql/index.handler
-    layers:
-      - arn:aws:lambda:ap-south-1:842592815228:layer:nodejs:1
-    environment:
-      USER_POOL_ID: # The name of the env var in your lambda
-        Ref: CognitoUserPoolN6lbPool
-    events:
-      - http:
-          path: graphql
-          method: post
-          cors: true
-          authorizer:
-            type: COGNITO_USER_POOLS
-            authorizerId:
-              Ref: ApiGatewayAuthorizer  # 
-      - http:
-          path: graphql
-          method: get
-          cors: true
-
+    graphql:
+        handler: src/graphql/index.handler
+        layers:
+            - arn:aws:lambda:ap-south-1:842592815228:layer:nodejs:1
+        environment:
+            USER_POOL_ID: # The name of the env var in your lambda
+                Ref: CognitoUserPoolN6lbPool
+        events:
+            - http:
+                  path: graphql
+                  method: post
+                  cors: true
+                  # authorizer:
+                  #   type: COGNITO_USER_POOLS
+                  #   authorizerId:
+                  #     Ref: ApiGatewayAuthorizer  #
+            - http:
+                  path: graphql
+                  method: get
+                  cors: true
 
 resources:
-  - ${file(resources/s3.yml)}
-  - ${file(resources/cognito.yml)}
-  #  - ${file(resources/iot.yml)}
-
+    - ${file(resources/s3.yml)}
+    - ${file(resources/cognito.yml)}
+    #  - ${file(resources/iot.yml)}
 
 custom:
-  
-  amplify:
-    - filename: ./aws-exports.ts
-      type: typescript
-      appClient: CognitoUserPoolClient
-  #  serverless-iot-local:
-  #    start:
-  #      port: 1884
-  #    # Uncomment only if you already have an MQTT server running locally
-  #    # noStart: true
-  #    redis:
-  #      host: 'localhost'
-  #      port: 6379
-  #      db: 12
-
-  
+    amplify:
+        - filename: ./aws-exports.ts
+          type: typescript
+          appClient: CognitoUserPoolClient
+    #  serverless-iot-local:
+    #    start:
+    #      port: 1884
+    #    # Uncomment only if you already have an MQTT server running locally
+    #    # noStart: true
+    #    redis:
+    #      host: 'localhost'
+    #      port: 6379
+    #      db: 12

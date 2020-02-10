@@ -1,12 +1,16 @@
 const { gql } = require('apollo-server-lambda');
 import { DateTimeResolver, EmailAddressResolver, PhoneNumberResolver } from 'graphql-scalars';
 import { CompanyResolver, MutationResolver, QueryResolver } from './resolvers';
+import { BranchResolver } from './resolvers/BranchResolver';
+import { EmployeeResolver } from './resolvers/EmployeeResolver';
 
 // ￿raphql resolvers
 export const resolvers = {
 	Query: QueryResolver,
 	Mutation: MutationResolver,
 	Company: CompanyResolver,
+	Branch: BranchResolver,
+	Employee: EmployeeResolver,
 	// Custom scalar types
 	DateTime: DateTimeResolver,
 	Email: EmailAddressResolver,
@@ -21,13 +25,18 @@ export const schema = gql`
 	scalar PhoneNumber
 
 	type Query {
-		getCompany(id: String!): Company
+		getCompany(_id: String!): Company
+		getBranch(_id: String!, companyId: String!): Branch
+		getEmployee(_id: String!, companyId: String!): Employee
 	}
 
 	type Mutation {
-		addCompany(name: String!, email: Email!, telephone: PhoneNumber!): Company
-		updateCompany(name: String!, email: String!, telephone: PhoneNumber!): Company!
+		addCompany(_id: String!, name: String!, email: Email!, telephone: PhoneNumber!): Company!
+		updateCompany(_id: String!, name: String, email: Email, telephone: PhoneNumber!): Company!
 		addBranch(name: String!, companyId: String!, location: LocationInput!): Branch!
+		updateBranch(_id: String!, companyId: String!, name: String, location: LocationInput): Branch!
+		addEmployee(_id: String!, companyId: String!, firstName: String!, lastName: String!, email: Email!): Employee!
+		updateEmployee(_id: String!, companyId: String!, firstName: String, lastName: String, email: Email): Employee!
 	}
 
 	type Company {
@@ -44,18 +53,6 @@ export const schema = gql`
 		foodCategories: [FoodCategory!]
 	}
 
-	type Employee {
-		_id: String!
-		createdAt: DateTime!
-		updatedAt: DateTime!
-		companyId: String!
-		firstName: String!
-		lastName: String!
-		email: String!
-		lastActive: String!
-		companyInfo: Company
-	}
-
 	type Branch {
 		_id: String!
 		companyId: String!
@@ -66,6 +63,18 @@ export const schema = gql`
 		location: Location
 		tables: [Table!]
 		orders: [Order!]
+	}
+
+	type Employee {
+		_id: String!
+		createdAt: DateTime!
+		updatedAt: DateTime!
+		companyId: String!
+		firstName: String!
+		lastName: String!
+		email: String!
+		lastActive: String!
+		companyInfo: Company
 	}
 
 	type Table {

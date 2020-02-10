@@ -1,37 +1,35 @@
 {
-	"name": "n6lb-server",
-	"version": "1.0.0",
-	"description": "",
-	"main": "index.js",
-	"scripts": {
-		"dev": "serverless offline start --port 5000 -s local",
-		"invoke": "serverless invoke --function",
-		"invoke_local": "serverless invoke local --function",
-		"sls": "sls deploy -v"
-	},
-	"repository": {
-		"type": "git",
-		"url": "git+redacted"
-	},
-	"author": "",
-	"license": "ISC",
-	"homepage": "redacted#readme",
-	"devDependencies": {
-		"@types/aws-lambda": "^8.10.40",
-		"@types/mongodb": "^3.3.15",
-		"aws-amplify-serverless-plugin": "^1.4.1",
-		"aws-sdk": "^2.479.0",
-		"prettier": "1.19.1",
-		"serverless-offline": "^5.4.2",
-		"serverless-plugin-log-retention": "^2.0.0",
-		"serverless-plugin-typescript": "^1.1.7",
-		"typescript": "^3.5.2"
-	},
-	"dependencies": {
-		"apollo-server-lambda": "^2.9.16",
-		"axios": "^0.19.2",
-		"graphql": "^14.6.0",
-		"graphql-scalars": "^1.0.6",
-		"mongodb": "^3.5.2"
-	}
+    "name": "n6lb-server",
+    "version": "1.0.0",
+    "description": "",
+    "main": "index.js",
+    "scripts": {
+        "dev": "serverless offline start --port 5000 -s local",
+        "invoke": "serverless invoke --function",
+        "invoke_local": "serverless invoke local --function",
+        "sls": "sls deploy -v"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+redacted"
+    },
+    "author": "",
+    "license": "ISC",
+    "homepage": "redacted#readme",
+    "devDependencies": {
+        "@types/aws-lambda": "^8.10.40",
+        "@types/mongodb": "^3.3.15",
+        "aws-amplify-serverless-plugin": "^1.4.1",
+        "aws-sdk": "^2.479.0",
+        "prettier": "1.19.1",
+        "serverless-offline": "^5.4.2",
+        "serverless-plugin-typescript": "^1.1.7",
+        "typescript": "^3.5.2"
+    },
+    "dependencies": {
+        "apollo-server-lambda": "^2.9.16",
+        "graphql": "^14.6.0",
+        "graphql-scalars": "^1.0.6",
+        "mongodb": "^3.5.2"
+    }
 }
