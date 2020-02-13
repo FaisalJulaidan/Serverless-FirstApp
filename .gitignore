@@ -11,3 +11,6 @@ awsconfiguration.json
 aws-exports.*
 operations.graphql
 API.swift
+
+*.iml
+
