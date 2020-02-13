@@ -6,7 +6,6 @@ package:
 
 plugins:
     - serverless-plugin-typescript
-    #  - serverless-iot-local
     - serverless-offline
     - aws-amplify-serverless-plugin
 
@@ -43,10 +42,10 @@ functions:
                   path: graphql
                   method: post
                   cors: true
-                  # authorizer:
-                  #   type: COGNITO_USER_POOLS
-                  #   authorizerId:
-                  #     Ref: ApiGatewayAuthorizer  #
+                  authorizer:
+                      type: COGNITO_USER_POOLS
+                      authorizerId:
+                          Ref: ApiGatewayAuthorizer
             - http:
                   path: graphql
                   method: get
@@ -55,19 +54,9 @@ functions:
 resources:
     - ${file(resources/s3.yml)}
     - ${file(resources/cognito.yml)}
-    #  - ${file(resources/iot.yml)}
 
 custom:
     amplify:
         - filename: ./aws-exports.ts
           type: typescript
           appClient: CognitoUserPoolClient
-    #  serverless-iot-local:
-    #    start:
-    #      port: 1884
-    #    # Uncomment only if you already have an MQTT server running locally
-    #    # noStart: true
-    #    redis:
-    #      host: 'localhost'
-    #      port: 6379
-    #      db: 12

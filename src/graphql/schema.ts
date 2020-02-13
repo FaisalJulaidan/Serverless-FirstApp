@@ -89,61 +89,54 @@ export const schema = gql`
 		activeOrders: [Order!]
 	}
 
-	type Customer {
-		_id: String!
-		createdAt: DateTime!
-		updatedAt: DateTime!
-		displayName: String!
-		firstname: String!
-		lastName: String!
-		email: String!
-		address: String
-	}
-
-	# union User = Customer | Guest
-
-	type Guest {
-		_id: String!
-		displayName: String!
-	}
-
-	type Location {
-		country: String!
-		city: String!
-		street: String!
-		lat: Float!
-		lng: Float!
-	}
-
-	type FoodItem {
+	type Category {
 		_id: String!
 		companyId: String!
+		name: String!
+		description: String
+		dishes: [Dish!]
+	}
+
+	type Entree {
+		_id: String!
+		companyId: String!
+		name: String!
+		description: String!
+		dishes: [Dish!]
+		sides: [Side!]
+	}
+
+	type Dish {
+		_id: String!
+		companyId: String!
+		name: String!
+		description: String!
+		price: Float!
 		isAvailable: Boolean!
-		unitPrice: Float!
-		sides: [FoodItem!]
-		ingredients: [Ingredient!]
+		numOfSides: Int
+		sides: [Side!]
 	}
 
-	type Ingredient {
+	type Side {
 		_id: String!
+		companyId: String!
 		name: String!
-		desc: String!
-		maxQuantity: Int!
-		unitPrice: Float!
+		description: String!
+		extraPrice: Float
+		isAvailable: Boolean!
 	}
 
-	type FoodCategory {
-		_id: String!
-		name: String!
-		desc: String!
-		foodItems: [FoodItem!]
-	}
+	# type Toppings {
+
+	# }
 
 	type Menu {
 		_id: String
 		companyId: String!
+		branchId: String!
 		companyInfo: Company!
-		categories: [FoodCategory!]
+		branchInfo: Branch!
+		categories: [Category!]
 	}
 
 	type Order {
@@ -160,27 +153,77 @@ export const schema = gql`
 		servedAt: DateTime
 	}
 
-	type OrderFoodItem {
+	# type OrderFoodItem {
+	# 	_id: String!
+	# 	foodItemId: String!
+	# 	status: OrderFoodItemStatus!
+	# 	approvedAt: DateTime
+	# 	servedAt: DateTime
+	# 	quantity: Int!
+	# 	unitPrice: Float!
+	# 	notes: String!
+	# 	sides: [OrderFoodItem!]
+	# 	ingredients: [OrderIngredient!]
+	# }
+
+	# type OrderIngredient {
+	# 	_id: String!
+	# 	ingredientId: String!
+	# 	name: String!
+	# 	desc: String!
+	# 	quantity: Int!
+	# 	unitPrice: Float!
+	# }
+
+	# union User = Customer | Guest
+
+	type Customer {
 		_id: String!
-		foodItemId: String!
-		status: OrderFoodItemStatus!
-		approvedAt: DateTime
-		servedAt: DateTime
-		quantity: Int!
-		unitPrice: Float!
-		notes: String!
-		sides: [OrderFoodItem!]
-		ingredients: [OrderIngredient!]
+		createdAt: DateTime!
+		updatedAt: DateTime!
+		displayName: String!
+		firstname: String!
+		lastName: String!
+		email: String!
+		address: String
 	}
 
-	type OrderIngredient {
+	type Guest {
 		_id: String!
-		ingredientId: String!
-		name: String!
-		desc: String!
-		quantity: Int!
-		unitPrice: Float!
+		displayName: String!
 	}
+
+	type Location {
+		country: String!
+		city: String!
+		street: String!
+		lat: Float!
+		lng: Float!
+	}
+
+	# type FoodItem {
+	# 	_id: String!
+	# 	companyId: String!
+	# 	isAvailable: Boolean!
+	# 	unitPrice: Float!
+	# 	sides: [FoodItem!]
+	# 	ingredients: [Ingredient!]
+	# }
+
+	# type Ingredient {
+	# 	_id: String!
+	# 	name: String!
+	# 	desc: String!
+	# 	maxQuantity: Int!
+	# 	unitPrice: Float!
+	# }
+
+	# type FoodCategory {
+	# 	_id: String!
+	# 	name: String!
+	# 	desc: String!
+	# 	foodItems: [FoodItem!]
+	# }
 
 	# === === === === #
 	# === Inputs === #
