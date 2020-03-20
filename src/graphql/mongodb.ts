@@ -51,7 +51,7 @@ export const insert = async <Output>(collection: string, args): Promise<Output> 
 	args.updatedAt = null;
 	const res = await client.insertOne(args);
 	if (res.result.n !== 0) {
-		throw 'Error Inserting Data';
+		throw 'Error inserting Data';
 	} else {
 		return args;
 	}

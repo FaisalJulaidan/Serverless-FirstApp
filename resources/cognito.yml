@@ -56,13 +56,13 @@ Resources:
                 - ADMIN_NO_SRP_AUTH
             GenerateSecret: false
 
-    # The federated identity for our user pool to auth with
+    # The federated identity provider for our user pool to auth with
     CognitoIdentityPool:
         Type: AWS::Cognito::IdentityPool
         Properties:
             # Generate a name based on the stage
-            IdentityPoolName: ${self:service}_IdentityPool_${self:provider.stage}
-            # Don't allow unathenticated users
+            IdentityPoolName: ${self:service}-identity-pool-${self:provider.stage}
+            # Allow unathenticated users
             AllowUnauthenticatedIdentities: true
             # Link to our User Pool
             CognitoIdentityProviders:

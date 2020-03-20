@@ -1,6 +1,6 @@
 import * as aws from 'aws-sdk';
 import { AdminCreateUserRequest } from 'aws-sdk/clients/cognitoidentityserviceprovider';
-import { Employee } from '../declarations';
+// import { Employee } from '../declarations';
 // import awsmobile from '../amplify/aws-exports-dev';
 
 const db = new aws.DynamoDB.DocumentClient({ region: 'ap-south-1' });
@@ -8,7 +8,7 @@ const cognitoidentityserviceprovider = new aws.CognitoIdentityServiceProvider();
 
 export const handler = async (event) => {
     console.log(event);
-    const employee: Employee = event.employee;
+    const employee = event.employee;
     try {
         const url: string = event.pool_url;
         const pool_id = url.substr(url.indexOf('.com') + 5);
