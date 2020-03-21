@@ -59,6 +59,6 @@ resources:
 
 custom:
   amplify:
-    - filename: ./aws-exports.ts
+    - filename: ../n6lb-customer/src/aws-exports.ts
       type: typescript
       appClient: CognitoUserPoolClient

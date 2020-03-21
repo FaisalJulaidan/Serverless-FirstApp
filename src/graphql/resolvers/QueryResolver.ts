@@ -23,7 +23,7 @@ export const QueryResolver: Resolver<any> = {
 	getCompany: async (_, args) => {
 		return get<Company>('companies', args);
 	},
-	getBranch: (_, args) => get<Branch>('branches', args),
-	getEmployee: (_, args) => get<Employee>('employees', args),
+	// getBranch: (_, args) => get<Branch>('branches', args),
+	// getEmployee: (_, args) => get<Employee>('employees', args),
 	// getEmployee: (_, args: GetOtherInput) => get<Employee>('employees', args),
 };

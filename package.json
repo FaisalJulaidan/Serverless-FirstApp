@@ -4,7 +4,7 @@
     "description": "",
     "main": "index.js",
     "scripts": {
-        "dev": "serverless offline start --port 5000 -s local",
+        "dev": "serverless offline start --port 5000 -s dev",
         "invoke": "serverless invoke --function",
         "invoke_local": "serverless invoke local --function",
         "sls": "sls deploy -v"
