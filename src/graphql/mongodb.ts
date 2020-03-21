@@ -1,9 +1,9 @@
-import mongodb, { Db, UpdateWriteOpResult } from 'mongodb';
+import mongodb, { Db } from 'mongodb';
 
-const ObjectId = mongodb.ObjectId;
 const MongoClient = mongodb.MongoClient;
 let cachedDb: Db | null = null;
 
+//  === Database Connection === //
 const connectToDatabase = async (uri: string) => {
     if (cachedDb) {
         console.log('=> using cached db');
@@ -18,55 +18,48 @@ const connectToDatabase = async (uri: string) => {
     }
 };
 
-//  === General CRUD operations using MongoDB === //
+//  === General CRUD Operations Using MongoDB === //
 export const get = async <Output>(collection: string, args: object): Promise<Output | null> => {
-    console.log('Get', { collection, args });
     try {
+        console.log('Get', { collection, args });
         const client = (await connectToDatabase(process.env.MONGODB_URI!)).collection(collection);
         return await client.findOne<Output>({ ...args });
     } catch (err) {
-        console.error(err);
         return err;
     }
 };
 
 export const find = async <Output = any>(collection: string, args: object): Promise<Output[] | null> => {
-    console.log('Find', { collection, args });
     try {
+        console.log('Find', { collection, args });
         const client = (await connectToDatabase(process.env.MONGODB_URI!)).collection(collection);
         return await client.find<Output>({ ...args }).toArray();
-    } catch (error) {
-        console.error(error);
-        return error;
+    } catch (err) {
+        return err;
     }
 };
 
 export const insert = async <Output>(collection: string, args): Promise<Output> => {
-    console.log('Insert', { collection, args });
     try {
-        const client = (await connectToDatabase(process.env.MONGODB_URI!)).collection(collection);
         args.createdAt = new Date();
         args.updatedAt = null;
+        console.log('Insert', { collection, args });
+        const client = (await connectToDatabase(process.env.MONGODB_URI!)).collection(collection);
         return (await client.insertOne(args)).ops[0];
     } catch (err) {
         return err;
     }
 };
 
-export const update = async (collection: string, filter: object, args): Promise<UpdateWriteOpResult> => {
-    console.log('Update', { collection, filter, args });
+export const update = async <Output>(collection: string, filter: object, args): Promise<Output> => {
     try {
-        const client = (await connectToDatabase(process.env.MONGODB_URI!)).collection(collection);
+        delete args._id; // _id is immutable
         args.updatedAt = new Date();
-        const res = await client.findOneAndUpdate(filter, { $set: { name: args.name } });
-
-        console.log(res);
-        // if (res.result.nModified == 0) {
-        //     return Promise.reject('Nothing was modified');
-        // }
-        return args;
+        console.log('Update', { collection, filter, args });
+        const client = (await connectToDatabase(process.env.MONGODB_URI!)).collection(collection);
+        const res = await client.findOneAndUpdate(filter, { $set: args }, { returnOriginal: false });
+        return res.value || Promise.reject('Document does not exist'); // res.value should exist if update was successful
     } catch (err) {
-        console.log('inside errororrrrrrrrr');
         return err;
     }
 

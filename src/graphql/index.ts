@@ -6,9 +6,9 @@ const { ApolloServer,  } = require('apollo-server-lambda');
 const server = new ApolloServer({
 	typeDefs: schema,
 	resolvers,
-	formatError: (error) => {
-		console.error(error);
-		return {message:"Database error..."};
+	formatError: (err) => {
+		console.error(err);
+		return err.message;
 	},
 	// context: ({ event }) => {
 	// 	console.log('getting user');

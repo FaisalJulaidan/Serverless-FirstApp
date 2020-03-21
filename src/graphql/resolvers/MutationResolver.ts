@@ -1,7 +1,7 @@
 import { Company, Branch, Employee } from '../models';
 import { insert, update } from '../mongodb';
 import { Resolver } from './QueryResolver';
-var ObjectID = require('mongodb').ObjectID;
+const ObjectId = require('mongodb').ObjectID;
 
 export const MutationResolver: Resolver<any> = {
 	addCompany: (_, args) => {
@@ -9,7 +9,7 @@ export const MutationResolver: Resolver<any> = {
 		return insert<Company>('companies', args);
 	},
 	updateCompany: (_, args) => {
-		return update('companies', { _id: args._id }, args);
+		return update('companies', { _id: ObjectId(args._id) }, args);
 	},
 	// addBranch: (_, args) => {
 	// 	return insert<Branch>('branches', args);
